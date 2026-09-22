@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Product</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav><a href="/shop.html">Shop</a><a href="/cart.html">Cart</a><a href="/orders.html">My Orders</a><a href="#" id="logout">Logout</a></nav></header>
+<div class="wrap"><div id="box" class="panel">Loading product…</div></div>
+<footer>© 2026 GYONGS</footer>
+<script src="/app.js"></script>
+<script>
+(async () => {
+  await GY.requireUser();
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { document.getElementById('box').innerHTML = '<div class="error">Missing product id.</div>'; return; }
+  try {
+    const { product: p } = await GY.api('/api/products/' + id);
+    document.getElementById('box').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" class="pgrid">
+      <img src="${GY.img(p.image)}" alt="${p.name}" style="width:100%;border-radius:14px;aspect-ratio:1/1;object-fit:cover" onerror="this.onerror=null;this.src='${GY.img('GYONGS.jpeg')}'">
+      <div><span class="pill">${p.category}</span><h1>${p.name}</h1>
+      <div class="price" style="font-size:1.8rem">${GY.rand(p.price)}</div>
+      <p style="line-height:1.7;color:#ddd">${p.description||''}</p>
+      <label>Quantity</label><input id="q" type="number" min="1" value="1" style="max-width:120px">
+      <br><br><button class="btn" id="add">Add to Cart</button>
+      <a class="btn ghost" href="/shop.html">Continue shopping</a><p id="m"></p></div></div>`;
+    document.getElementById('add').onclick = async () => {
+      try {
+        await GY.api('/api/cart/items', { method:'POST', body: JSON.stringify({ product_id: p.id, quantity: Number(document.getElementById('q').value||1) }) });
+        document.getElementById('m').innerHTML = '<div class="notice">Added! <a href="/cart.html" style="color:#ffd633">View cart</a></div>';
+      } catch(e){ document.getElementById('m').innerHTML = `<div class="error">${e.message}</div>`; }
+    };
+  } catch(e){ document.getElementById('box').innerHTML = `<div class="error">${e.message}</div>`; }
+})();
+document.getElementById('logout').onclick = (e)=>{e.preventDefault();GY.logout();};
+</script>
+<style>@media(max-width:700px){.pgrid{grid-template-columns:1fr !important}}</style>
+</body></html>

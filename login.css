@@ -1,0 +1,413 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    background-image: url('/assets/GYONGS.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+header{
+    display:flex;
+    top:0;
+    left:0;
+    position:fixed;
+    justify-content:space-between;
+    padding:20px 100px;
+    width:100%;
+    background:l;
+    z-index:99;
+
+}
+.logo {
+    margin: 0;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.navigation a{
+    position:relative;
+    font-size:1.3em;
+    color:rgb(197, 46, 46);
+    font-weight:500;
+    margin-left:0;
+    text-decoration:none;
+
+
+    
+
+}
+.input-box {
+    position:relative;
+    width:100%;
+    height:44px;
+    border-bottom: 2px solid black;
+    margin:20px 0;
+}
+.input-box input{
+    width:100%;
+    height:100%;
+    background:transparent;
+    border:none;
+    outline:none;
+    padding: 20px 35px 0 5px;
+}
+.input-box label{
+    position:absolute;
+    top:50%;
+    left:5px;
+    transform:translateY(-50%);
+    transition: all 0.3s ease;
+    pointer-events:none;
+}
+.input-box input:focus + label,
+.input-box input:valid + label {
+    top: 0;
+    transform: translateY(0);
+    font-size: 0.85em;
+    transition:all 0.3s ease;
+}
+.input-icon {
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    
+}
+.remember-forgot {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.reg-container,
+#login {
+    width: 100%;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 18px 18px;
+    box-sizing: border-box;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 8px 0 12px;
+    gap: 10px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: .9em;
+    font-weight: 500;
+}
+
+.forgot {
+    color: black;
+    text-decoration: none;
+    font-size: .9em;
+    font-weight: 500;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    display: block;
+    margin-top: 5px;
+    cursor:pointer;
+    border-radius:6px;
+    outline:none;
+    border:none;
+    height:40px;
+    background:blueviolet
+}
+
+
+.register {
+    font-size:.9em;
+    color:black;
+    text-align:center;
+    font-weight:500;
+    margin: 10px 0 0;
+    text-align: center;
+}
+.register p a{
+    color:rgb(170, 48, 48);
+    text-decoration:none;
+    font-weight:600;
+
+}
+.register p a:hover{
+    text-decoration:underline;
+}
+.container .icon-close{
+    position:absolute;
+    top:0;
+    right:0;
+    width:45px;
+    height:45px;
+    background:rgb(179, 168, 168);
+    color:blue;
+    display:flex;
+    justify-content:center;
+    font-size:2em;
+    border-bottom-left-radius:20px;
+    align-items:center;
+    overflow:hidden;
+    z-index:1;
+    cursor:pointer;
+
+
+
+
+}
+
+
+.h2log{
+    height:40px;
+    text-align:center;
+    font-size:1.8em;
+}
+.navigation a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    width:100%;
+    height:3px;
+    background:white;
+    border-radius:5px;
+    bottom:-6px;
+    transform-origin:right;
+    transform:scaleX(0);
+    transition:transform .5s ease;
+    box-shadow:0 0 30px rgba(0,0,0,5);
+    text-decoration:none;
+
+}
+.center{
+    display:flex;
+    align-items:center;
+}
+.navigation a:hover::after{
+    transform:scaleX(1);
+
+}
+.navigation .btnlogin{
+    width:130px;
+    outline:none;
+    height:50px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    cursor:pointer;
+    font-size:1em;
+    box-shadow:0 0 30px rgba(0,0,0,0.25);
+    margin-left:40px;
+    color: white;
+    backdrop-filter: blur(10px);
+    transition:.3s ease;
+
+}
+.navigation .btnlogin:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color:white;
+}
+.navigation .btnlogin:active {
+    background: #ffd633;
+    color: #111;
+    border-color: #ffd633;
+}
+.auth-wrapper {
+    position: relative;
+    width: min(440px, 75vw);
+    margin-top: 0;
+    min-height: 620px;
+}
+
+#close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+#login-panel,
+#register-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+    align-items: stretch;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0,0,0,5);
+    overflow-y: auto;
+    overflow-x: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.7s ease, opacity 0.45s ease, visibility 0.45s ease;
+}
+
+#login-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+#register-panel {
+    transform: translateX(60px);
+    z-index: 1;
+}
+
+.auth-wrapper:has(#register-panel:target) #register-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.auth-wrapper:has(#register-panel:target) #login-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-60px);
+}
+
+.auth-wrapper:has(#login-panel:target) #login-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.auth-wrapper:has(#login-panel:target) #register-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(60px);
+}
+
+#close:target ~ .auth-wrapper {
+    display: none;
+}
+
+.btnlogin,
+.toggle-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btnlogin {
+    width: 130px;
+    outline: none;
+    height: 50px;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: 0 0 30px rgba(0,0,0,5);
+    margin-left: 40px;
+    color: rgb(206, 28, 28);
+}
+
+.btnlogin:hover {
+    background: transparent;
+    color: white;
+}
+
+.toggle-link {
+    color: rgb(170, 48, 48);
+    font-weight: 600;
+}
+
+.container {
+    position: relative;
+}
+
+.container .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: rgb(179, 168, 168);
+    color: blue;
+    display: flex;
+    justify-content: center;
+    font-size: 2em;
+    border-bottom-left-radius: 20px;
+    align-items: center;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.register-container {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+    body {
+        align-items: flex-start;
+        padding-top: 95px;
+        padding-bottom: 24px;
+    }
+
+    .auth-wrapper {
+        width: min(440px, 92vw);
+        min-height: 620px;
+    }
+
+    header {
+        padding: 15px 20px;
+        align-items: center;
+    }
+
+    .navigation {
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    .navigation a {
+        font-size: 1em;
+    }
+
+    .navigation .btnlogin {
+        width: 90px;
+        height: 40px;
+    }
+}

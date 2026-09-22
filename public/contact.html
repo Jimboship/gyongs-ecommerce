@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Contact</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav><a href="/">Home</a><a href="/about.html">About Us</a><a href="/services.html">Services</a><a href="/contact.html">Contact</a><a href="/login">Login</a><a class="btn" href="/login#register-panel">Register</a></nav></header>
+<div class="wrap"><section class="hero"><h1>Contact <em>GYONGS</em></h1><p>Fictional school-project contact details (not personal info).</p></section>
+<div class="grid"><div class="panel"><h3>Customer support</h3><p>Email: support@gyongs-demo.co.za<br>Phone: +27 11 555 0142 (fictional)<br>Address: 12 Demo Street, Johannesburg, Gauteng (fictional)<br>Hours: Mon–Fri, 09:00–17:00</p></div>
+<div class="panel"><h3>Send a message</h3><form id="cform"><label>Name</label><input required id="cn"><br><br><label>Email</label><input required type="email" id="ce"><br><br><label>Message</label><textarea required id="cm" rows="4"></textarea><br><br><button class="btn" type="submit">Send (demo)</button><p id="cmsg"></p></form></div></div></div>
+<footer>© 2026 GYONGS • School project</footer>
+<script>document.getElementById('cform').addEventListener('submit', e=>{e.preventDefault();document.getElementById('cmsg').textContent='Thanks! Demo form only — your message was not sent anywhere.';e.target.reset();});</script></body></html>

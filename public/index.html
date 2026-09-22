@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Home</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h2 class="logo">GYONGS<span>.</span></h2>
+  <nav>
+    <a href="/">Home</a><a href="/about.html">About Us</a><a href="/services.html">Services</a>
+    <a href="/contact.html">Contact</a><a href="/login">Login</a><a class="btn" href="/login#register-panel">Register</a>
+  </nav>
+</header>
+<div class="wrap">
+  <section class="hero">
+    <h1>Wear <em>GYONGS.</em> Own the street.</h1>
+    <p>GYONGS is a modern fashion / lifestyle store: trousers, shoes, accessories, and a women's collection. The GYONGS logo is fictional and was created for this school project. Register, log in, then shop the protected store.</p>
+    <div class="hero-actions">
+      <a class="btn" href="/login#register-panel">Create account</a>
+      <a class="btn ghost" href="/login">Log in to shop</a>
+      <a class="btn ghost" href="/services.html">View collections</a>
+    </div>
+  </section>
+
+  <h2 style="margin-top:26px">Featured products</h2>
+  <p class="notice-small">Full shopping (add to cart / checkout) unlocks after login. Featured items below are a preview.</p>
+  <div class="grid" id="featured"></div>
+
+  <section class="panel" style="margin-top:22px">
+    <h2>Collections</h2>
+    <div class="catbar">
+      <a href="/services.html#trousers">Trousers</a><a href="/services.html#shoes">Shoes</a>
+      <a href="/services.html#accessories">Accessories</a><a href="/services.html#women">Women</a>
+    </div>
+    <p class="notice-small">The GYONGS logo is fictional and used only for this school project.</p>
+  </section>
+</div>
+<footer>© 2026 GYONGS • School project demo store • Prices in Rand (R)</footer>
+<script src="/app.js"></script>
+<script>
+(async () => {
+  try {
+    const d = await GY.api('/api/products');
+    const box = document.getElementById('featured');
+    box.innerHTML = d.products.slice(0, 8).map(p => `
+      <article class="card">
+        <img src="${GY.img(p.image)}" alt="${p.name}" loading="lazy"
+             onerror="this.onerror=null;this.src='${GY.img('GYONGS.jpeg')}'">
+        <div class="pad">
+          <span class="pill">${p.category}</span>
+          <h3>${p.name}</h3>
+          <div class="price">${GY.rand(p.price)}</div>
+          <p>${(p.description||'').slice(0,90)}...</p>
+          <div class="row"><a class="btn" href="/login">Log in to shop</a></div>
+        </div>
+      </article>`).join('');
+  } catch (e) {
+    document.getElementById('featured').innerHTML =
+      `<div class="panel">Could not load products yet. Start the backend, create the DB, then run <b>db/schema.sql</b> + <b>db/seed.sql</b>. (${e.message})</div>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GYONGS | My Orders</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h2 class="logo">GYONGS<span>.</span></h2>
+    <nav>
+      <a href="/shop.html">Shop</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/orders.html">My Orders</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <section class="hero">
+      <h1>My <em>Orders</em></h1>
+      <p>Only your own orders are shown.</p>
+    </section>
+
+    <div id="box" class="panel" style="margin-top: 16px">
+      Loading…
+    </div>
+  </div>
+
+  <footer>© 2026 GYONGS</footer>
+
+  <script src="/app.js"></script>
+  <script>
+    (async () => {
+      await GY.requireUser();
+
+      try {
+        const d = await GY.api('/api/orders');
+
+        document.getElementById('box').innerHTML = d.orders.length
+          ? `
+            <table>
+              <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+              ${d.orders.map((o) => `
+                <tr>
+                  <td>#${o.id}</td>
+                  <td>${new Date(o.created_at).toLocaleString()}</td>
+                  <td>${GY.rand(o.total)}</td>
+                  <td>${o.status}</td>
+                  <td>
+                    <button class="btn ghost" onclick="view(${o.id})">
+                      View
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </table>
+            <div id="det"></div>
+          `
+          : `
+            <p>No orders yet.</p>
+            <a class="btn" href="/shop.html">Start shopping</a>
+          `;
+      } catch (e) {
+        document.getElementById('box').innerHTML = `
+          <div class="error">${e.message}</div>
+        `;
+      }
+    })();
+
+    async function view(id) {
+      const d = await GY.api('/api/orders/' + id);
+
+      document.getElementById('det').innerHTML = `
+        <h3>Order #${d.order.id}</h3>
+        ${d.items
+          .map((i) => `<p>${i.quantity} × ${i.name} @ ${GY.rand(i.price)}</p>`)
+          .join('')}
+      `;
+    }
+
+    document.getElementById('logout').onclick = (e) => {
+      e.preventDefault();
+      GY.logout();
+    };
+  </script>
+</body>
+</html>

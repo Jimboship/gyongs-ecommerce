@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Checkout</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav><a href="/shop.html">Shop</a><a href="/cart.html">Cart</a><a href="/orders.html">My Orders</a><a href="#" id="logout">Logout</a></nav></header>
+<div class="wrap"><section class="hero"><h1>Check<em>out</em></h1><p>Review your cart, confirm, and we save the order in PostgreSQL. No real payment — demo checkout.</p></section>
+<div id="box" class="panel" style="margin-top:16px">Loading…</div></div>
+<footer>© 2026 GYONGS</footer>
+<script src="/app.js"></script>
+<script>
+(async()=>{ await GY.requireUser();
+  try{
+    const c = await GY.api('/api/cart');
+    if(!c.items.length){document.getElementById('box').innerHTML='<p>Your cart is empty.</p><a class="btn" href="/shop.html">Continue shopping</a>';return;}
+    document.getElementById('box').innerHTML = c.items.map(i=>`<p>${i.quantity} × ${i.product.name} — ${GY.rand(i.line_total)}</p>`).join('')
+      + `<h2>Total: ${GY.rand(c.total)}</h2><button class="btn" id="go">Confirm order</button><p id="m"></p>`;
+    document.getElementById('go').onclick = async ()=>{
+      try{ const o = await GY.api('/api/orders',{method:'POST'});
+        document.getElementById('box').innerHTML = `<div class="notice"><h2>Order #${o.order.id} confirmed!</h2><p>Total ${GY.rand(o.order.total)} • Status: ${o.order.status}</p><a class="btn" href="/orders.html">View My Orders</a> <a class="btn ghost" href="/shop.html">Keep shopping</a></div>`;
+      }catch(e){document.getElementById('m').innerHTML=`<div class="error">${e.message}</div>`;}
+    };
+  }catch(e){document.getElementById('box').innerHTML=`<div class="error">${e.message}</div>`;}
+})();
+document.getElementById('logout').onclick=(e)=>{e.preventDefault();GY.logout();};
+</script></body></html>

@@ -1,0 +1,21 @@
+{
+  "name": "gyongs-ecommerce",
+  "version": "1.0.0",
+  "description": "GYONGS fashion/lifestyle e-commerce - HTML/CSS/JS + Node Express + PostgreSQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:init": "psql -U postgres -p 2026 -d gyongs_db -f db/schema.sql",
+    "db:seed": "psql -U postgres -p 2026 -d gyongs_db -f db/seed.sql"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0"
+  }
+}

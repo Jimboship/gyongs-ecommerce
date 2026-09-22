@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Shop</title>
+<link rel="stylesheet" href="/style.css"></head>
+<body>
+  <header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav>
+  <a href="/shop.html">Shop</a>
+  <a href="/shop.html?category=trousers">Trousers</a>
+  <a href="/shop.html?category=shoes">Shoes</a>
+  <a href="/shop.html?category=accessories">Accessories</a>
+  <a href="/shop.html?category=women">Women</a>
+  <a href="/cart.html">Cart</a>
+  <a href="/orders.html">My Orders</a>
+  <a href="#" id="logout">Logout</a>
+</nav>
+</header>
+<div class="wrap">
+  <section class="hero"><h1 id="hello">Shop <em>GYONGS</em>
+  </h1><p>Protected shopping area — you are logged in. Pick a range, view a product, add to cart.</p>
+<div class="catbar" id="cats"><a href="/shop.html">All</a>
+  <a href="/shop.html?category=trousers">Trousers</a>
+  <a href="/shop.html?category=shoes">Shoes</a>
+  <a href="/shop.html?category=accessories">Accessories</a>
+  <a href="/shop.html?category=women">Women</a>
+</div>
+</section>
+<div id="msg"></div>
+<div class="grid" id="list"></div>
+</div>
+<footer>© 2026 GYONGS • Prices in Rand (R)</footer>
+<script src="/app.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const cat = params.get('category') || '';
+(async () => {
+  const me = await GY.requireUser();
+  document.getElementById('hello').innerHTML = `Hi ${me.name} — shop <em>GYONGS</em>`;
+  document.querySelectorAll('#cats a').forEach(a=>{
+    const c = new URL(a.href).searchParams.get('category') || '';
+    if (c === cat) a.classList.add('active');
+  });
+  const d = await GY.api('/api/products' + (cat ? '?category=' + cat : ''));
+  document.getElementById('list').innerHTML = d.products.map(p=>`
+    <article class="card"><img src="${GY.img(p.image)}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${GY.img('GYONGS.jpeg')}'">
+    <div class="pad"><span class="pill">${p.category}</span><h3>${p.name}</h3>
+    <div class="price">${GY.rand(p.price)}</div><p>${p.description||''}</p>
+    <div class="row"><a class="btn ghost" href="/product.html?id=${p.id}">View</a>
+    <button class="btn" onclick="addCart(${p.id})">Add to Cart</button></div></div></article>`).join('');
+})();
+async function addCart(id){
+  try { await GY.api('/api/cart/items', { method:'POST', body: JSON.stringify({ product_id:id, quantity:1 }) });
+    document.getElementById('msg').innerHTML = '<div class="notice">Added to cart. <a href="/cart.html" style="color:#ffd633">View cart</a></div>';
+  } catch(e){ document.getElementById('msg').innerHTML = `<div class="error">${e.message}</div>`; }
+}
+document.getElementById('logout').onclick = (e)=>{e.preventDefault();GY.logout();};
+</script></body></html>

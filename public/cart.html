@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Cart</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav><a href="/shop.html">Shop</a><a href="/cart.html">Cart</a><a href="/orders.html">My Orders</a><a href="#" id="logout">Logout</a></nav></header>
+<div class="wrap"><section class="hero"><h1>Your <em>Cart</em></h1><p>Saved in PostgreSQL for your account only.</p></section>
+<div id="box" class="panel" style="margin-top:16px">Loading cart…</div></div>
+<footer>© 2026 GYONGS</footer>
+<script src="/app.js"></script>
+<script>
+async function load(){
+  await GY.requireUser();
+  try {
+    const c = await GY.api('/api/cart');
+    if (!c.items.length) { document.getElementById('box').innerHTML = '<p>Your cart is empty.</p><a class="btn" href="/shop.html">Continue shopping</a>'; return; }
+    document.getElementById('box').innerHTML = `
+      <table><tr><th></th><th>Item</th><th>Price</th><th>Qty</th><th>Line total</th><th></th></tr>
+      ${c.items.map(i=>`<tr><td><img class="cart-img" src="${GY.img(i.product.image)}" onerror="this.onerror=null;this.src='${GY.img('GYONGS.jpeg')}'"></td>
+      <td>${i.product.name}<br><span class="notice-small">${i.product.category}</span></td>
+      <td>${GY.rand(i.product.price)}</td>
+      <td><span class="qty"><button onclick="ch(${i.id},${i.quantity-1})">−</button>${i.quantity}<button onclick="ch(${i.id},${i.quantity+1})">+</button></span></td>
+      <td>${GY.rand(i.line_total)}</td>
+      <td><button class="btn ghost" onclick="rm(${i.id})">Remove</button></td></tr>`).join('')}
+      </table><h2>Subtotal: ${GY.rand(c.subtotal)}</h2><h2>Total: ${GY.rand(c.total)}</h2>
+      <a class="btn ghost" href="/shop.html">Continue shopping</a> <a class="btn" href="/checkout.html">Proceed to checkout</a>`;
+  } catch(e){ document.getElementById('box').innerHTML = `<div class="error">${e.message}</div>`; }
+}
+async function ch(id,q){ if(q<1) return rm(id); await GY.api('/api/cart/items/'+id,{method:'PUT',body:JSON.stringify({quantity:q})}); load(); }
+async function rm(id){ await GY.api('/api/cart/items/'+id,{method:'DELETE'}); load(); }
+document.getElementById('logout').onclick=(e)=>{e.preventDefault();GY.logout();};
+load();
+</script></body></html>

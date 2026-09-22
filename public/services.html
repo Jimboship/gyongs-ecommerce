@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYONGS | Services / Collections</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><h2 class="logo">GYONGS<span>.</span></h2>
+<nav><a href="/">Home</a><a href="/about.html">About Us</a><a href="/services.html">Services</a><a href="/contact.html">Contact</a><a href="/login">Login</a><a class="btn" href="/login#register-panel">Register</a></nav></header>
+<div class="wrap"><section class="hero"><h1>Collections / <em>Services</em></h1>
+<p>Browse the GYONGS ranges below. To add to cart and checkout you must <a href="/login" style="color:#ffd633">log in</a> first — that is the protected shopping area.</p>
+<div class="catbar" id="cats"><a href="#" data-c="">All</a><a href="#" data-c="trousers">Trousers</a><a href="#" data-c="shoes">Shoes</a><a href="#" data-c="accessories">Accessories</a><a href="#" data-c="women">Women</a></div></section>
+<div class="grid" id="list"></div>
+<p class="notice-small">The GYONGS logo is fictional and used only for this school project.</p></div>
+<footer>© 2026 GYONGS • School project</footer>
+<script src="/app.js"></script>
+<script>
+const list = document.getElementById('list');
+async function load(cat=''){ 
+  try {
+    const d = await GY.api('/api/products' + (cat ? '?category='+cat : ''));
+    list.innerHTML = d.products.map(p=>`<article class="card"><img src="${GY.img(p.image)}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${GY.img('GYONGS.jpeg')}'"><div class="pad"><span class="pill">${p.category}</span><h3>${p.name}</h3><div class="price">${GY.rand(p.price)}</div><p>${p.description||''}</p><div class="row"><a class="btn" href="/login">Log in to shop</a></div></div></article>`).join('') || '<div class="panel">No products in this range yet.</div>';
+  } catch(e){ list.innerHTML = `<div class="panel">Start backend + DB first. (${e.message})</div>`; }
+}
+document.getElementById('cats').addEventListener('click', e=>{
+  const a = e.target.closest('a'); if(!a) return; e.preventDefault();
+  document.querySelectorAll('#cats a').forEach(x=>x.classList.remove('active'));
+  a.classList.add('active'); load(a.dataset.c);
+});
+const hash = location.hash.replace('#',''); load(hash || '');
+</script></body></html>
